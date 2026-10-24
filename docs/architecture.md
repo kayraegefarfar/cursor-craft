@@ -57,7 +57,7 @@ BUDGET: inexpensive-first strategy and stop/escalate criteria
 - Never have two workers edit the same file concurrently in a shared tree.
 - A Git worktree isolates checkout state, **not** dangerous processes or network access; use stronger isolation where necessary.
 - Read only relevant source files and the minimum verified decision records; expand when risk or evidence demands it.
-- Avoid unbounded log propagation. Experts return succinct findings and pointers to raw evidence.
+- Avoid unbounded log propagation. Skills return succinct findings to the main Agent and pointers to raw evidence.
 - Event-based memory updates are **not** automatic in alpha. Use `task-handoff` with explicit project write permission or produce a text handoff.
 
 ## Professional quality standard

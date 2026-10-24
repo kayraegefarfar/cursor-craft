@@ -1,6 +1,8 @@
 # Compact session handoff template
 
-Use for meaningful boundaries, not every tiny edit. Keep it project-local or return as chat text; write only with user permission.
+The copy that ships with a local plugin install is [skills/task-handoff/template.md](../skills/task-handoff/template.md). Installation copies `skills/` and does not copy this `docs/` directory.
+
+Use the template for meaningful boundaries, not every tiny edit. Keep the result project-local or return it as chat text. Write a project file only when that write is in scope.
 
 ```
 PROJECT / HEAD REVISION:

@@ -21,7 +21,7 @@ description: Use for major UI/UX redesigns, new visual identity, creative concep
 
 ## Reference work
 - Analyze third-party visual inspiration for principles (art direction, hierarchy, spatial layout, motion choreography), not for unlicensed duplication.
-- Request a targeted REA investigation only when the actual technical behavior or authorized implementation details of a reference need analysis. Summarize findings via the Orchestrator.
+- Ask the main Agent to use `rea-workflow` only when authorized implementation details of a reference must be inspected. Return the summary to the main Agent.
 
 ## Completion contract
 Return: selected concept and rationale; changed views/files if implemented; proof actually observed; checks passed/failed/skipped; important unresolved risks. A mock-up alone is not a verified working UI.

@@ -1,122 +1,74 @@
 # Cursor Craft
 
-**Professional software engineering, original interface design and evidence-first analysis for Cursor.**
+A small Cursor plugin for careful software work: one always-on engineering rule and four on-demand Skills. The main Cursor Agent stays in charge. Skills add procedure only when the task needs them.
 
-> **Status: v0.5.0-alpha, international GitHub source preview.** Package structure and offline checks are prepared, but it has **not** been loaded or behavior-tested inside Cursor. It is **not** a verified production release. The public source repository is <https://github.com/kayraegefarfar/cursor-craft>. That repository is not a git tag, a GitHub Release, or Cursor Marketplace approval.
+Public source: <https://github.com/kayraegefarfar/cursor-craft>
 
-The manifest version is `0.5.0-alpha`. The Cursor plugin schema allows that prerelease form. Docs that say `v0.5.0-alpha` name the same preview; the leading `v` is only the git tag convention and is not part of `plugin.json`.
+Manifest version: `0.5.0-alpha`. A later git tag would be named `v0.5.0-alpha`; the leading `v` is not part of `plugin.json`. This repository is not a GitHub Release and not a Cursor Marketplace listing.
 
-Cursor Craft is an intentionally small **Cursor Plugin**, not a new model, background service or a set of automatically executing bots. It equips Cursor's Agent with a compact core rule and specialized, on-demand Skill workflows.
+## What you get
 
-## Why it exists
-
-- **Craftsmanship first.** Deliver maintainable, secure, readable, tested software and thoughtful product experiences—not just code that seems to work.
-- **Adaptive orchestration.** Keep simple work with the main Agent. Activate specialists only where they add value.
-- **Experimental Design Studio.** Build product-appropriate, imaginative interfaces with intentional visual direction, motion and real usability checks.
-- **Authorized REA workflow.** Investigate existing code or permitted applications with transparent evidence and safe, license-aware integration choices.
-- **Honest verification.** Separate actual test results from guesses and unrun checks.
-- **Efficient context.** Target relevant modules, reuse verified decisions, and checkpoint long tasks without flooding the prompt.
-
-## Contents
-
-| Component | Type | When to use |
+| Piece | When the main Agent should use it | What it does not do |
 | --- | --- | --- |
-| `professional-core.mdc` | Always-on short rule | All tasks; scope, safety, engineering quality, evidence |
-| `design-studio` | On-demand Skill | Major original UI/UX work and redesigns |
-| `rea-workflow` | On-demand Skill | Authorized source/app analysis and integration |
-| `deep-quality-review` | On-demand Skill | High-risk review and pre-release validation |
-| `task-handoff` | On-demand Skill | Long-task summaries and event-based project memory |
+| `professional-core` | Every task | It does not replace Cursor permissions or run tests by itself |
+| `design-studio` | A new screen, visual identity, or substantial interaction redesign | Minor CSS, copy, or spacing edits |
+| `rea-workflow` | Authorized inspection of code or a permitted application before integrating behavior | Casual navigation of the current repository |
+| `deep-quality-review` | A risky change, a serious regression, or a pre-release review | Routine typo fixes |
+| `task-handoff` | A long task needs a compact resume note | Short tasks that already fit in the current chat |
 
-The plugin has **no executable hooks, no automatic file scanning, no built-in MCP server, no telemetry and no destructive installer**. It does not ship any third-party reverse-engineering binary. The `morluto/rea` engine is described as an **optional external candidate**, not a dependency.
+Examples:
 
-## Global use and GitHub distribution
+- "Rename this label" stays with the main Agent.
+- "Redesign the onboarding flow" calls `design-studio`.
+- "How does this owned desktop build implement export, and what can we safely reimplement?" calls `rea-workflow`.
+- "Review this migration before release" calls `deep-quality-review`.
+- "I am stopping for today; leave a resume note" calls `task-handoff`.
 
-The plugin is designed for **user-scope installation**, where one local plugin is available across Cursor projects, rather than copying Rules or Skills into every project. Installation remains opt-in, reversible, and subject to Cursor policy. It does not guarantee that two unrelated projects will share private project memory.
+You can also invoke a Skill directly, when Cursor supports it: `/design-studio`, `/rea-workflow`, `/deep-quality-review`, `/task-handoff`. Selection from ordinary language is heuristic.
 
-- **Cross-platform setup:** [Installation guide](docs/installation.md) (Windows, macOS, Linux).
-- **Cursor Agent-assisted setup:** [English installation prompt](CURSOR_AGENT_INSTALL_PROMPT.md).
-- **Publishing as source on GitHub:** [GitHub publication guide](docs/GITHUB_PUBLISHING.md) and [alpha release notes](GITHUB_RELEASE_NOTES.md).
-- **Optional GitHub repository import:** `.cursor-plugin/marketplace.json` provides a single-plugin marketplace descriptor; this path has **not** yet been tested in Cursor.
+The package has no hooks, no MCP server, no telemetry, and no installer that edits Cursor settings. `morluto/rea` is an optional external tool, not included here.
 
-GitHub users do **not** need the prior private trial kit. The entire repository is in English, and no personal usernames, local configuration, secrets or project-specific assets are bundled.
+## Install
 
-## How to try it (only when you choose)
+Full steps, Windows paths, and the stop conditions are in [docs/installation.md](docs/installation.md). Summary:
 
-1. Review [compatibility and limitations](docs/compatibility.md), [safety model](docs/security-model.md) and existing user/project rules/skills for overlap.
-2. Follow the **manual, reversible local preview** in [installation](docs/installation.md). It requires your explicit decision; nothing here modifies your machine by itself.
-3. Verify the core rule and `SKILL.md` discovery in Cursor. Try trivial and specialist task prompts, then inspect whether correct skills were selected.
-4. Run documented [acceptance scenarios](docs/acceptance-tests.md), recording real results before calling the package production-ready.
+1. Clone or download this repository and read the source.
+2. If `~/.cursor/plugins/local/cursor-craft/` already exists, stop. Do not overwrite it.
+3. Copy only `.cursor-plugin/plugin.json`, `rules/`, `skills/`, and `LICENSE` into a new `~/.cursor/plugins/local/cursor-craft/` directory.
+4. Reload Cursor and look in Customize for one rule and four Skills.
 
-Skills may also be called explicitly, e.g. `/design-studio`, `/rea-workflow`, `/deep-quality-review`, or `/task-handoff`, subject to installed Cursor support. Natural-language selection remains heuristic—not guaranteed.
+`skills/task-handoff/template.md` is included in that copy. The `docs/` directory is not.
 
-## Offline project checks
+## Remove
 
-Requires only Python 3.10+; no network or dependencies:
+If Cursor installed the plugin, disable it from Customize. If you copied it yourself, delete only `~/.cursor/plugins/local/cursor-craft/` when that folder has no files you added, then reload Cursor. Removal does not undo edits already made in projects.
+
+## Verification status
+
+Offline package checks and GitHub Actions for commit `fb55fd5` passed on Ubuntu and Windows. Those checks do not show that Cursor loads the plugin, chooses the right Skill, or saves tokens.
+
+Cursor runtime scenarios for discovery, trivial routing, each Skill, and approval boundaries are **NOT_RUN** in this revision. The bundled evidence file stays `NOT_RUN` until a real Cursor session records results. See [docs/runtime-evidence.md](docs/runtime-evidence.md) and [docs/acceptance-tests.md](docs/acceptance-tests.md).
+
+## Limitations
+
+- Instructions cannot force operating-system permissions, model routing, or isolation.
+- No measured quality or token improvement is claimed.
+- Behavior depends on the Cursor version and on rules you already have. Do not replace those rules from this package.
+- Inspecting a compiled application needs the owner's authorization. This plugin does not bundle an analyzer.
+
+## Maintainer documentation
+
+- [Architecture](docs/architecture.md)
+- [Release gates](docs/release-gates.md)
+- [Publication checklist](docs/publication-checklist.md)
+- [Static checks](docs/static-checks.md)
+- [Archive integrity](docs/archive-integrity.md)
+- [Security model](docs/security-model.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [CHANGELOG.md](CHANGELOG.md), [LICENSE](LICENSE)
+
+Offline checks, Python 3.10+, no network:
 
 ```bash
 python tools/validate_package.py
 python -m unittest discover -s tests -v
 ```
-
-These tests verify the **repository format and policy consistency**, **not** Cursor agent behavior, UI craftsmanship, Windows compatibility or token savings.
-
-## Architecture
-
-```text
-User request
-   -> Main Cursor Agent (adaptive decisions + permissions)
-         |-- basic coding / project inspection (default)
-         |-- design-studio         (when creative UI work warrants it)
-         |-- rea-workflow         (when authorized research warrants it)
-         |-- deep-quality-review  (when risk warrants deep inspection)
-         `-- task-handoff         (when meaningful checkpoint is needed)
-   -> risk-based evidence/checks
-   -> concise report with verified and unverified portions
-```
-
-See [Architecture](docs/architecture.md), [Public release gates](docs/release-gates.md), [reviewer rubric](docs/professional-quality-rubric.md) and [benchmark plan](docs/benchmarks.md).
-
-## Limitations and release status
-
-- Markdown instructions **do not enforce OS permissions**, hard token quotas, automatic agent/model routing, test execution or true isolation.
-- No current real-world claims of quality uplift, agent autonomy or resource savings are made.
-- Behavior depends on Cursor version, account and runtime tool availability; local testing is required.
-- Existing user rules, Skills and Plugins may conflict. Do not mass-copy or overwrite them.
-- Analysis of compiled applications requires explicit authorization and appropriate external tools; those are not included.
-
-## Sources and acknowledgements
-
-- [Cursor Plugins](https://cursor.com/docs/plugins) and [Plugins reference](https://cursor.com/docs/reference/plugins)
-- [Cursor Rules](https://cursor.com/docs/rules) and [Cursor Skills](https://cursor.com/docs/skills)
-- [morluto/rea](https://github.com/morluto/rea) — optional third-party inspiration/tool; **not vendored, installed or reproduced**
-
-## Community
-
-Read [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), [CHANGELOG.md](CHANGELOG.md), and [LICENSE](LICENSE).
-
-## V0.5 tooling (continued from V0.3)
-
-- **Read-only overlap audit:** `python tools/overlap_audit.py your-existing-pack.zip` identifies only likely Skill-topic overlaps from explicitly supplied archives. It cannot identify the actual installed Cursor configuration and never merges files.
-- **Conservative benchmark parser:** `python tools/compare_runs.py examples/benchmarks/empty-measurements.json` reports `measured: false` until you supply real paired data. Cached token categories remain separate.
-- **Reproducible release ZIP builder:** `python tools/build_release.py --output ../cursor-craft-source.zip` validates then packages the repository and prints SHA-256, without installing anything.
-- **Publication checklist:** [docs/publication-checklist.md](docs/publication-checklist.md) separates static alpha preparation from actual release authorization and runtime evidence.
-
-The validation suite tests package structure, negative cases, benchmark math and ZIP reproducibility. It **does not** test Cursor-agent decisions, model routing, React/Electron interfaces or UI production quality.
-
-The [requirements trace](docs/requirements-traceability.md) maps each promised capability to its actual source instructions and future runtime test; no behavioral tests are asserted as passed.
-
-## V0.5 maintainer checks (source-only)
-
-- **Runtime evidence attestations:** [`examples/runtime-acceptance-template.json`](examples/runtime-acceptance-template.json) keeps all 12 real Cursor tests at `NOT_RUN`. After opt-in testing, record externally reviewed evidence identifiers in a **private copy** and inspect its structure with `python tools/release_readiness.py path/to/private-acceptance.json`. The checker neither reads evidence nor certifies authenticity; it **never authorizes publication**. See [runtime evidence instructions](docs/runtime-evidence.md).
-- **Hardened validation:** rejects duplicate JSON keys, Windows-insensitive path collisions, unsupported plugin components and malformed scenario fields. See [maintainer security review](docs/maintainer-review.md).
-- **Reproducibility CI:** checks the evidence template is not a fabricated pass report and confirms two source release ZIPs are byte-identical.
-
-The code is still **source-preview alpha**, not a completed multi-agent runtime, third-party REA integration or measured product-quality improvement.
-
-## V0.5 source archive integrity (no Cursor installation)
-
-- `python tools/build_release.py --output ../cursor-craft-0.5.0-alpha.zip` refuses to overwrite a pre-existing destination and writes a deterministic `SOURCE-MANIFEST.sha256` inside the archive.
-- `python tools/verify_archive.py ../cursor-craft-0.5.0-alpha.zip` checks safe relative paths, Windows filename compatibility, file hashes, ZIP checksums, size bounds and symlink-free entries **without extracting**.
-- CI includes a Windows and Linux offline-check job. CI execution still requires GitHub; a local pass is not CI evidence.
-- The archive manifest is a **corruption detector, not a digital signature**: an attacker controlling both files and hashes could replace both. Only retrieve from a trusted maintainer release.
-- See [archive threat model](docs/archive-integrity.md) and [static check limitations](docs/static-checks.md).

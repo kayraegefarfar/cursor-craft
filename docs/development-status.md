@@ -2,7 +2,7 @@
 
 **Review date:** 2026-10-24
 **Version:** 0.5.0-alpha
-**Repository state:** Public source at <https://github.com/kayraegefarfar/cursor-craft>. No `v0.5.0-alpha` git tag and no GitHub Release. Cursor Customize discovery has not been verified.
+**Repository state:** Public source at <https://github.com/kayraegefarfar/cursor-craft>. No `v0.5.0-alpha` git tag and no GitHub Release. Cursor Customize discovery remains **NOT_RUN**.
 
 ## Verifiable in this workspace
 

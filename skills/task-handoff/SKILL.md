@@ -18,4 +18,4 @@ description: Use when a long implementation needs an accurate compact handoff, s
 6. Suggest a clean new session when context is unwieldy, but do not promise automatic chat transfer or exact remaining token counts.
 
 ## Output template
-See `docs/handoff-template.md` at the plugin root when available. The handoff should be practical enough to resume without rereading the entire chat, and small enough not to inflate every future task.
+Use [template.md](template.md) in this Skill directory. Local installation copies `skills/`, so the template is available without the repository `docs/` folder. The handoff should be practical enough to resume without rereading the entire chat, and small enough not to inflate every future task.

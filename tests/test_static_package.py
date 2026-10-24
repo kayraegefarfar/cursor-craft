@@ -60,6 +60,30 @@ class SourcePackageTests(unittest.TestCase):
         self.assertNotIn('eventually published', policy.lower())
         self.assertNotRegex(policy, r'[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}')
 
+    def test_skill_template_and_real_roles_ship_together(self):
+        skill = (ROOT / 'skills/task-handoff/SKILL.md').read_text(encoding='utf-8')
+        template = ROOT / 'skills/task-handoff/template.md'
+        self.assertIn('template.md', skill)
+        self.assertNotIn('docs/handoff-template.md', skill)
+        self.assertTrue(template.is_file())
+        self.assertIn('PROJECT / HEAD REVISION:', template.read_text(encoding='utf-8'))
+        install = (ROOT / 'docs/installation.md').read_text(encoding='utf-8')
+        self.assertIn('skills/', install)
+        self.assertIn('skills/task-handoff/template.md', install)
+        for rel in (
+            'skills/design-studio/SKILL.md',
+            'skills/rea-workflow/SKILL.md',
+            'skills/deep-quality-review/SKILL.md',
+            'rules/professional-core.mdc',
+        ):
+            self.assertNotIn('Orchestrator', (ROOT / rel).read_text(encoding='utf-8'))
+        review = (ROOT / 'skills/deep-quality-review/SKILL.md').read_text(encoding='utf-8')
+        core = (ROOT / 'rules/professional-core.mdc').read_text(encoding='utf-8')
+        self.assertIn('existing unit tests', review)
+        self.assertNotIn('only with permission', review.lower())
+        self.assertIn('without a new approval', core)
+        self.assertNotIn('trial kit', (ROOT / 'README.md').read_text(encoding='utf-8').lower())
+
     def test_github_marketplace_one_plugin_root(self):
         market = json.loads((ROOT / '.cursor-plugin/marketplace.json').read_text(encoding='utf-8'))
         self.assertEqual('cursor-craft-community', market['name'])

@@ -11,7 +11,7 @@ Find consequential, reproducible problems in an actual change without producing 
 1. Confirm scope, acceptance criteria, base state, intended behavior and changed files. Respect uncommitted work.
 2. Identify highest-risk paths: correctness and state transitions, permissions/secrets, unsafe external inputs, data persistence, backward compatibility, memory/CPU hot paths, UI interaction and accessibility where applicable.
 3. Read the relevant diff and immediate dependencies. Request deeper context only if a specific risk requires it.
-4. Run appropriate existing tests or inspections **only with permission and suitable environment**. Use more expensive integration/regression checks only when risk warrants them.
+4. Run safe checks that already belong to the approved change: existing unit tests, linters and type checks. Ask before destructive, credentialed, externally mutating, unusually expensive, or otherwise risky commands. Do not ask again for work already authorized.
 5. Categorize findings: `BLOCKER`, `IMPORTANT`, `MINOR`; annotate each with reproduction steps, affected files and actual evidence. Keep guesses separately labeled `UNCONFIRMED`.
 6. Recommend the smallest reliable fix, avoid unrelated refactors and do not overwrite user changes. Recheck the implicated behavior after a fix when possible.
 7. Clearly distinguish passed, failed and not-run checks; a clean diff or compilation alone does not prove functional success.

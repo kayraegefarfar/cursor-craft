@@ -23,7 +23,7 @@
    LICENSE
    ```
 
-   Never write into existing global `~/.cursor/rules`, `~/.cursor/skills`, or project `.cursor/rules`. Never overwrite another plugin. Avoid symbolic-link installs outside the local plugins directory.
+   Never write into existing global `~/.cursor/rules`, `~/.cursor/skills`, or project `.cursor/rules`. Never overwrite another plugin. Avoid symbolic-link installs outside the local plugins directory. The handoff template is `skills/task-handoff/template.md`, so it is included when `skills/` is copied. The `docs/` tree is not part of this copy.
 6. In Cursor, use `Developer: Reload Window` (or restart Cursor), then check **Customize** for **one core rule** and **four Skills**. Actual discovery is version/permission-dependent.
 7. Try a small coding task and a design or review task in a disposable repository; record failures and side effects before wider use. See [acceptance tests](acceptance-tests.md).
 
