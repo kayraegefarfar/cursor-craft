@@ -26,7 +26,7 @@ REQUIRED_DOCS = frozenset({
     'docs/maintainer-review.md', 'docs/professional-quality-rubric.md', 'docs/archive-integrity.md', 'docs/GITHUB_PUBLISHING.md',
 })
 SAFE_EXTENSIONS = frozenset({'.md', '.mdc', '.json', '.py', '.yml', '.yaml', '.txt', '.toml'})
-RESERVED_FILES = frozenset({'LICENSE', '.gitignore', 'SOURCE-MANIFEST.sha256'})
+RESERVED_FILES = frozenset({'LICENSE', '.gitignore', '.gitattributes', 'SOURCE-MANIFEST.sha256'})
 SKIP_NAMES = frozenset({'.git', '__pycache__', '.pytest_cache', '.mypy_cache', '.ruff_cache', 'dist'})
 EXCLUDED_PATHS = frozenset({'mcp.json', 'hooks', 'agents', 'commands', 'SKILL.md'})
 LICENSE_IDENTIFIERS = {'MIT'}
@@ -36,6 +36,23 @@ SECRET_MARKERS = (
     re.compile(r'gh[pousr]_[A-Za-z0-9]{30,}'),
     re.compile(r'AKIA[A-Z0-9]{16}'),
 )
+
+
+def casefold_collision_messages(relative_names: list[str]) -> list[str]:
+    """Report slash-separated paths that differ only by case.
+
+    Comparison is textual. Windows path equality would hide the collision.
+    """
+    errors: list[str] = []
+    seen: dict[str, str] = {}
+    for name in relative_names:
+        folded = name.casefold()
+        previous = seen.get(folded)
+        if previous is not None and previous != name:
+            errors.append(f'Case-insensitive filename collision: {name} vs {previous}')
+        else:
+            seen[folded] = name
+    return errors
 
 
 def strict_json(text: str) -> object:
@@ -197,16 +214,13 @@ def validate(root: Path = ROOT) -> list[str]:
         if (root / item).exists():
             errors.append(f'Alpha cannot ship an active {item} component')
 
-    casefolded_paths: dict[str, Path] = {}
+    relative_names: list[str] = []
     for path in root.rglob('*'):
         rel = path.relative_to(root)
+        relative_names.append(rel.as_posix())
         path_issue = validate_relative_name(rel.as_posix())
         if path_issue:
             errors.append(f'Nonportable/unsafe source path: {rel}: {path_issue}')
-        folded = rel.as_posix().casefold()
-        if folded in casefolded_paths and casefolded_paths[folded] != rel:
-            errors.append(f'Case-insensitive filename collision: {rel} vs {casefolded_paths[folded]}')
-        casefolded_paths[folded] = rel
         if path.is_symlink():
             errors.append(f'Symlink forbidden: {rel}')
             continue  # Never read or follow a symlink, including one pointing outside this root.
@@ -253,6 +267,7 @@ def validate(root: Path = ROOT) -> list[str]:
                 errors.append('Extracted source hash manifest does not match file contents')
         except (OSError, ValueError, UnicodeError) as exc:
             errors.append(f'Invalid extracted source hash manifest: {exc}')
+    errors.extend(casefold_collision_messages(relative_names))
     _relative_markdown_links(root, errors)
 
     # Evidence starts at NOT_RUN. Only manually gathered proof may be recorded later.

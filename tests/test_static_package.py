@@ -9,7 +9,7 @@ from zipfile import ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
-from validate_package import ALLOWED_SKILLS, frontmatter, validate  # noqa: E402
+from validate_package import ALLOWED_SKILLS, casefold_collision_messages, frontmatter, validate  # noqa: E402
 from build_release import assemble  # noqa: E402
 from verify_archive import verify  # noqa: E402
 from archive_security import validate_relative_name  # noqa: E402
@@ -137,7 +137,13 @@ class SourcePackageTests(unittest.TestCase):
             dest = Path(td) / 'repo'; copytree(ROOT, dest)
             outside = Path(td) / 'outside.txt'
             outside.write_text('Confidential file must never enter source package')
-            (dest / 'docs' / 'indirect.md').symlink_to(outside)
+            link = dest / 'docs' / 'indirect.md'
+            try:
+                link.symlink_to(outside)
+            except OSError as exc:
+                if getattr(exc, 'winerror', None) == 1314:
+                    self.skipTest('This Windows account cannot create symlinks')
+                raise
             self.assertTrue(any('Symlink forbidden' in x for x in validate(dest)))
 
     def test_duplicate_frontmatter_key_rejected(self):
@@ -155,10 +161,14 @@ class SourcePackageTests(unittest.TestCase):
             self.assertTrue(any('Duplicate JSON key' in x for x in validate(dest)))
 
     def test_case_insensitive_filename_collision_rejected(self):
+        messages = casefold_collision_messages(['docs/architecture.md', 'docs/ARCHITECTURE.md'])
+        self.assertTrue(any('Case-insensitive filename collision' in x for x in messages))
         with TemporaryDirectory() as td:
             dest = Path(td) / 'repo'; copytree(ROOT, dest)
             (dest / 'docs' / 'ARCHITECTURE.md').write_text('Conflicts on Windows')
-            self.assertTrue(any('Case-insensitive filename collision' in x for x in validate(dest)))
+            names = {path.name for path in (dest / 'docs').iterdir()}
+            if {'architecture.md', 'ARCHITECTURE.md'} <= names:
+                self.assertTrue(any('Case-insensitive filename collision' in x for x in validate(dest)))
 
     def test_invalid_routing_field_returns_error_not_crash(self):
         with TemporaryDirectory() as td:
