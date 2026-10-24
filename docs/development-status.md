@@ -2,7 +2,7 @@
 
 **Review date:** 2026-10-24
 **Version:** 0.5.0-alpha
-**Repository state:** Public source at <https://github.com/kayraegefarfar/cursor-craft>. No `v0.5.0-alpha` git tag and no GitHub Release. Cursor Customize discovery remains **NOT_RUN**.
+**Repository state:** Public source at <https://github.com/kayraegefarfar/cursor-craft>, commit `43262f5`. No `v0.5.0-alpha` git tag and no GitHub Release. Cursor Customize discovery remains **NOT_RUN** because the installed local plugin does not match this commit and was not modified.
 
 ## Verifiable in this workspace
 

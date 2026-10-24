@@ -13,7 +13,7 @@ A valid source ZIP is not proof that Cursor executes the instructions as expecte
 - [x] `plugin.json` uses name `cursor-craft` and version `0.5.0-alpha`. That prerelease form matches the Cursor plugin semver pattern. The git tag, if created later, would be `v0.5.0-alpha`; the leading `v` is not part of the manifest.
 - [x] Marketplace `source` is `.`, the repository root. Documented resolution reads `<source>/.cursor-plugin/plugin.json`.
 - [x] No hooks, MCP server, or agents are bundled.
-- [x] The workflow requests `contents: read` and pins `actions/checkout`. Actions run `40111616058` passed on `ubuntu-latest` and `windows-latest` for commit `8902ca8`.
+- [x] The workflow requests `contents: read` and pins `actions/checkout`. Actions run `40132211291` passed on `ubuntu-latest` and `windows-latest` for commit `43262f5`.
 - [x] Documentation does not claim Cursor runtime discovery or measured token savings.
 
 ## Still required before tagging v0.5.0-alpha

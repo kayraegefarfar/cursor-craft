@@ -2,7 +2,7 @@
 
 ## Current state: v0.5.0-alpha
 
-The source structure, policy content and offline checker are available in the public repository. GitHub Actions for commit `8902ca8` passed its Ubuntu and Windows static jobs. No release tag exists. Actual Cursor runtime behavior, Customize discovery, cross-project interaction and performance improvement are **unverified**.
+The source structure, policy content and offline checker are available in the public repository. GitHub Actions run `40132211291` passed its Ubuntu and Windows static jobs for commit `43262f5`. No release tag exists. Actual Cursor runtime behavior, Customize discovery, cross-project interaction and performance improvement are **NOT_RUN**.
 
 See the [runtime evidence guidance](runtime-evidence.md) and [maintainer review](maintainer-review.md). Automated release-readiness checks do not replace reviewer signoff.
 

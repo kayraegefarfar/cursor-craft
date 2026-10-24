@@ -2,6 +2,8 @@
 
 **There is currently NO runtime evidence in this repository.** The source linter, static routing cases and offline tests cannot prove real Agent behavior. The test data in `examples/runtime-acceptance-template.json` correctly starts with every case marked `NOT_RUN`.
 
+On 2026-10-25, commit `43262f5` was checked again. GitHub Actions run `40132211291` passed its Ubuntu and Windows static jobs. T01–T12 were left `NOT_RUN`. A local plugin directory existed, but its rule and Skill files did not match that commit and the handoff template was absent. The directory was not replaced, so no Cursor discovery, Skill selection, approval, or handoff session was run.
+
 ## Test protocol (manual, opt-in)
 
 1. Use a **disposable project and clean Cursor test scope**, not the user's existing projects or global configuration. Record the Cursor build, OS, selected model/Auto settings, project revision and other applicable rules or plugins as an opaque `environment_key`.

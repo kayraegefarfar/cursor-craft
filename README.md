@@ -45,7 +45,7 @@ If Cursor installed the plugin, disable it from Customize. If you copied it your
 
 ## Verification status
 
-Offline package checks and GitHub Actions for commit `fb55fd5` passed on Ubuntu and Windows. Those checks do not show that Cursor loads the plugin, chooses the right Skill, or saves tokens.
+Offline package checks and GitHub Actions run `40132211291` for commit `43262f5` passed on Ubuntu and Windows. Those checks do not show that Cursor loads the plugin, chooses the right Skill, or saves tokens.
 
 Cursor runtime scenarios for discovery, trivial routing, each Skill, and approval boundaries are **NOT_RUN** in this revision. The bundled evidence file stays `NOT_RUN` until a real Cursor session records results. See [docs/runtime-evidence.md](docs/runtime-evidence.md) and [docs/acceptance-tests.md](docs/acceptance-tests.md).
 
