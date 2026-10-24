@@ -1,0 +1,16 @@
+{
+  "name": "cursor-craft",
+  "version": "0.5.0",
+  "description": "Risk-adaptive engineering craftsmanship, original interface design, authorized analysis, and evidence-driven verification for Cursor.",
+  "author": {
+    "name": "Cursor Craft contributors"
+  },
+  "license": "MIT",
+  "keywords": [
+    "engineering",
+    "design",
+    "quality",
+    "agent-workflows",
+    "reverse-engineering"
+  ]
+}
