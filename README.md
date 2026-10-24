@@ -2,7 +2,9 @@
 
 **Professional software engineering, original interface design and evidence-first analysis for Cursor.**
 
-> **Status: v0.5.0-alpha, international GitHub source preview.** Package structure and offline checks are prepared, but it has **not** been loaded or behavior-tested inside Cursor. It is **not** a verified production release. GitHub source publication is separate from Cursor Marketplace approval.
+> **Status: v0.5.0-alpha, international GitHub source preview.** Package structure and offline checks are prepared, but it has **not** been loaded or behavior-tested inside Cursor. It is **not** a verified production release. The public source repository is <https://github.com/kayraegefarfar/cursor-craft>. That repository is not a git tag, a GitHub Release, or Cursor Marketplace approval.
+
+The manifest version is `0.5.0-alpha`. The Cursor plugin schema allows that prerelease form. Docs that say `v0.5.0-alpha` name the same preview; the leading `v` is only the git tag convention and is not part of `plugin.json`.
 
 Cursor Craft is an intentionally small **Cursor Plugin**, not a new model, background service or a set of automatically executing bots. It equips Cursor's Agent with a compact core rule and specialized, on-demand Skill workflows.
 

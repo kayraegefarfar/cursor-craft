@@ -9,7 +9,7 @@ from zipfile import ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
-from validate_package import ALLOWED_SKILLS, casefold_collision_messages, frontmatter, validate  # noqa: E402
+from validate_package import ALLOWED_SKILLS, PLUGIN_VERSION, SEMVER, casefold_collision_messages, frontmatter, validate  # noqa: E402
 from build_release import assemble  # noqa: E402
 from verify_archive import verify  # noqa: E402
 from archive_security import validate_relative_name  # noqa: E402
@@ -25,9 +25,40 @@ class SourcePackageTests(unittest.TestCase):
     def test_manifest_matches_supported_cursor_plugin_shape(self):
         manifest = json.loads((ROOT / '.cursor-plugin/plugin.json').read_text(encoding='utf-8'))
         self.assertEqual('cursor-craft', manifest['name'])
-        self.assertEqual('0.5.0', manifest['version'])
+        self.assertEqual(PLUGIN_VERSION, manifest['version'])
+        self.assertEqual('https://github.com/kayraegefarfar/cursor-craft', manifest['repository'])
         for forbidden in ('mcpServers', 'hooks', 'agents', 'rules', 'skills', 'variables'):
             self.assertNotIn(forbidden, manifest)
+
+    def test_prerelease_version_matches_cursor_semver(self):
+        self.assertEqual('0.5.0-alpha', PLUGIN_VERSION)
+        self.assertTrue(SEMVER.fullmatch('0.5.0-alpha'))
+        self.assertTrue(SEMVER.fullmatch('1.2.3'))
+        self.assertFalse(SEMVER.fullmatch('0.5'))
+        self.assertFalse(SEMVER.fullmatch('v0.5.0-alpha'))
+        self.assertFalse(SEMVER.fullmatch('0.5.0-'))
+        with TemporaryDirectory() as td:
+            dest = Path(td) / 'repo'; copytree(ROOT, dest)
+            manifest_path = dest / '.cursor-plugin/plugin.json'
+            manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+            manifest['version'] = '0.5.0'
+            manifest_path.write_text(json.dumps(manifest), encoding='utf-8')
+            self.assertTrue(any('0.5.0-alpha' in item for item in validate(dest)))
+
+    def test_marketplace_source_dot_is_repository_root(self):
+        market = json.loads((ROOT / '.cursor-plugin/marketplace.json').read_text(encoding='utf-8'))
+        source = market['plugins'][0]['source']
+        self.assertEqual('.', source)
+        resolved = (ROOT / source / '.cursor-plugin' / 'plugin.json').resolve()
+        self.assertEqual(resolved, (ROOT / '.cursor-plugin' / 'plugin.json').resolve())
+        self.assertTrue(resolved.is_file())
+
+    def test_security_policy_matches_public_repository(self):
+        policy = (ROOT / 'SECURITY.md').read_text(encoding='utf-8')
+        self.assertIn('https://github.com/kayraegefarfar/cursor-craft', policy)
+        self.assertIn('Private vulnerability reporting', policy)
+        self.assertNotIn('eventually published', policy.lower())
+        self.assertNotRegex(policy, r'[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}')
 
     def test_github_marketplace_one_plugin_root(self):
         market = json.loads((ROOT / '.cursor-plugin/marketplace.json').read_text(encoding='utf-8'))

@@ -2,6 +2,7 @@
 
 ## 0.5.0-alpha — 2026-10-24
 
+- Record the public repository in the security policy and use `0.5.0-alpha` in the Cursor manifests, which accept that prerelease form.
 - Keep published source as LF on Windows so `SOURCE-MANIFEST.sha256` matches checkout, and test case-only filename collisions without requiring two directory entries.
 - Prepared English-only, GitHub-repository-ready source with cross-platform user-scope installation documentation.
 - Added one-entry Cursor marketplace manifest for repository import experimentation; **not runtime verified**.

@@ -4,7 +4,8 @@
 
 | Concern | Status |
 | --- | --- |
-| Cursor Plugin manifest `.cursor-plugin/plugin.json` | Uses documented format; local loading not yet tested |
+| Cursor Plugin manifest `.cursor-plugin/plugin.json` | `name` plus optional metadata. Version `0.5.0-alpha` matches the documented semver pattern, including its prerelease suffix. Local loading not yet tested |
+| Marketplace `source` | `"."` is the repository root. Documented resolution looks for `<source>/.cursor-plugin/plugin.json`. Importer behavior is not runtime-tested |
 | Rules in `rules/*.mdc` | Uses documented frontmatter; real application not yet verified |
 | Four skills at `skills/*/SKILL.md` | Uses documented required fields; discovery not yet runtime-tested |
 | Built-in Cursor Auto model selection | Unmodified; exact model routing is controlled by Cursor |

@@ -1,20 +1,36 @@
-# Maintainer publication checklist (V0.5.0 pre-release)
+# v0.5.0-alpha prerelease checklist
 
-**Status: GitHub alpha source may be published only with owner approval after source ownership/security review. NOT APPROVED as a stable or marketplace-verified release.** A valid source ZIP is not proof that Cursor executes the instructions as expected. No GitHub account or local Cursor installation is controlled by this repository.
+**Source repository:** public at <https://github.com/kayraegefarfar/cursor-craft>
+**Git tag `v0.5.0-alpha`:** not created
+**GitHub Release:** not created
+**Cursor Marketplace:** not submitted
 
-## Before any public alpha tag
+A valid source ZIP is not proof that Cursor executes the instructions as expected. Do not create the tag, the GitHub Release, or a Marketplace submission until the owner explicitly approves that action.
 
-- [ ] Confirm correct ownership and copyright wording for `LICENSE` and README. Only original/authorized source included.
-- [ ] Decide and test a private vulnerability intake channel; see `SECURITY.md`.
-- [ ] Inspect `plugin.json` against the current official Cursor plugin format.
-- [ ] Run `python tools/validate_package.py` and `python -m unittest discover -s tests -v`.
-- [ ] Inspect resulting ZIP and its SHA-256 checksum (produced by `tools/build_release.py`).
-- [ ] Enable Actions on GitHub only after reviewing workflow permissions and pinned dependencies.
-- [ ] Ensure documentation makes no claims about successful Cursor runtime tests or verified performance savings.
-- [ ] Obtain explicit consent from the owner to publish repository or release; no automatic pushes.
+## Already true for the public source
 
-- [ ] Confirm runtime evidence template remains `NOT_RUN` in the distributed source; actual case data lives privately.
-- [ ] Run `python tools/release_readiness.py examples/runtime-acceptance-template.json` to confirm the initial state is unmeasured.
+- [x] The source repository is public and includes the MIT license.
+- [x] `plugin.json` uses name `cursor-craft` and version `0.5.0-alpha`. That prerelease form matches the Cursor plugin semver pattern. The git tag, if created later, would be `v0.5.0-alpha`; the leading `v` is not part of the manifest.
+- [x] Marketplace `source` is `.`, the repository root. Documented resolution reads `<source>/.cursor-plugin/plugin.json`.
+- [x] No hooks, MCP server, or agents are bundled.
+- [x] The workflow requests `contents: read` and pins `actions/checkout`. Actions run `40111616058` passed on `ubuntu-latest` and `windows-latest` for commit `8902ca8`.
+- [x] Documentation does not claim Cursor runtime discovery or measured token savings.
+
+## Still required before tagging v0.5.0-alpha
+
+- [ ] Owner explicitly authorizes the annotated tag and a GitHub prerelease.
+- [ ] Enable GitHub Private Vulnerability Reporting. It was disabled on 2026-10-24. See `SECURITY.md`. Enabling it changes a repository security setting.
+- [ ] Confirm the copyright line is the wording the owner wants to keep. It currently says "Cursor Craft contributors".
+- [ ] Re-run `python tools/validate_package.py` and `python -m unittest discover -s tests -v` on the commit that will be tagged.
+- [ ] Build the ZIP outside the repository, verify it, and put the archive SHA-256 only in release text the owner approves.
+- [ ] Confirm the tagged commit's Actions run is green on both Ubuntu and Windows. The `8902ca8` run does not cover later commits.
+- [ ] Confirm the bundled runtime evidence template is still `NOT_RUN` only: `python tools/release_readiness.py examples/runtime-acceptance-template.json`.
+
+## Not part of this alpha tag
+
+- [ ] Cursor Customize discovery of one rule and four skills.
+- [ ] Behavioral cases T01–T12.
+- [ ] Marketplace review.
 
 ## Before declaring stable V1
 

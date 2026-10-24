@@ -13,7 +13,7 @@ Cursor Craft is an **open-source Cursor Plugin** for risk-adaptive engineering w
 
 ## Verification status
 
-The included Python static test suite has been checked locally. **Actual Cursor plugin discovery, agent routing, UI/UX outcomes, operating-system compatibility and token savings have NOT been validated.** Treat this as an experimental alpha, not a proven production release.
+The included Python static test suite has been checked locally, and GitHub Actions for commit `8902ca8` passed on Ubuntu and Windows. **Actual Cursor plugin discovery, agent routing, UI/UX outcomes and token savings have NOT been validated.** There is no `v0.5.0-alpha` git tag or GitHub Release. Treat this document as alpha notes, not a published GitHub Release.
 
 ## Quickstart
 

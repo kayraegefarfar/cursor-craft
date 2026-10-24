@@ -1,6 +1,6 @@
 # Publishing the source on GitHub
 
-This repository can be placed in a GitHub repository **as an alpha source preview**. GitHub publication is not the same as Cursor Marketplace certification, and this alpha is **not** advertised as a proven production-grade automation system.
+The public source repository is <https://github.com/kayraegefarfar/cursor-craft>. GitHub publication is not the same as Cursor Marketplace certification, a git tag, or a GitHub Release. This alpha is **not** a proven production-grade automation system. `v0.5.0-alpha` has not been tagged.
 
 ## Before creating the repository
 
@@ -24,7 +24,7 @@ Suggested topics: `cursor`, `cursor-plugin`, `agent-skills`, `developer-tools`, 
 
 **Local user-scope preview (cross-platform):** download/clone, inspect source, then follow [installation](installation.md) for the local plugin path. On Windows, macOS and Linux, `~/.cursor/plugins/local/cursor-craft` resolves under the current user home. Local imports may be restricted by workplace policy.
 
-**GitHub repository import:** Cursor documentation describes **Customize → From GitHub Repository** for repository marketplaces with `.cursor-plugin/marketplace.json`; this repo includes a one-entry marketplace manifest. Actual importer behavior for the repository-root plugin must be verified in a real Cursor session before promising one-click installation.
+**GitHub repository import:** Cursor documentation describes importing a repository marketplace that has `.cursor-plugin/marketplace.json`. This repo includes one entry whose `source` is `.`, the repository root. The documented resolver then reads `<source>/.cursor-plugin/plugin.json`, which is this repository's manifest. Actual importer behavior must be verified in a real Cursor session before promising one-click installation.
 
 **Cursor Marketplace:** optional later submission via https://cursor.com/marketplace/publish; Cursor reviews each submission. Do not imply listing before approval.
 

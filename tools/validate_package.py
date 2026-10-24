@@ -30,6 +30,14 @@ RESERVED_FILES = frozenset({'LICENSE', '.gitignore', '.gitattributes', 'SOURCE-M
 SKIP_NAMES = frozenset({'.git', '__pycache__', '.pytest_cache', '.mypy_cache', '.ruff_cache', 'dist'})
 EXCLUDED_PATHS = frozenset({'mcp.json', 'hooks', 'agents', 'commands', 'SKILL.md'})
 LICENSE_IDENTIFIERS = {'MIT'}
+PLUGIN_VERSION = '0.5.0-alpha'
+PUBLIC_REPOSITORY = 'https://github.com/kayraegefarfar/cursor-craft'
+# Cursor plugin schema: X.Y.Z with an optional prerelease suffix. No leading v.
+SEMVER = re.compile(
+    r'^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)'
+    r'(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)'
+    r'(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?$'
+)
 # Deliberately narrow patterns: catch likely real tokens without flagging docs examples.
 SECRET_MARKERS = (
     re.compile(r'-----BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY-----'),
@@ -139,8 +147,13 @@ def validate(root: Path = ROOT) -> list[str]:
             errors.append('Plugin name must use lowercase letters/numbers/dots/hyphens')
         if manifest.get('name') != 'cursor-craft':
             errors.append('Unexpected plugin name')
-        if not re.fullmatch(r'\d+\.\d+\.\d+', str(manifest.get('version', ''))):
-            errors.append('Plugin version must be semantic X.Y.Z')
+        version = str(manifest.get('version', ''))
+        if not SEMVER.fullmatch(version):
+            errors.append('Plugin version must be semantic X.Y.Z with an optional prerelease suffix')
+        elif version != PLUGIN_VERSION:
+            errors.append(f'Plugin version must stay {PLUGIN_VERSION} until a new release is declared')
+        if manifest.get('repository') != PUBLIC_REPOSITORY:
+            errors.append('Plugin repository must be the public GitHub repository')
         if not isinstance(manifest.get('description'), str) or len(manifest['description']) < 30:
             errors.append('Missing/short plugin description')
         if manifest.get('license') not in LICENSE_IDENTIFIERS:
@@ -166,8 +179,12 @@ def validate(root: Path = ROOT) -> list[str]:
         entries = market.get('plugins', []) if isinstance(market, dict) else []
         if not isinstance(entries, list) or len(entries) != 1:
             errors.append('Marketplace must reference exactly one plugin')
-        elif not isinstance(entries[0], dict) or entries[0].get('name') != 'cursor-craft' or entries[0].get('source') != '.' or entries[0].get('version') != '0.5.0':
+        elif not isinstance(entries[0], dict) or entries[0].get('name') != 'cursor-craft' or entries[0].get('source') != '.' or entries[0].get('version') != PLUGIN_VERSION:
             errors.append('Marketplace entry does not reference the root Cursor Craft plugin')
+        else:
+            resolved = (root / entries[0]['source'] / '.cursor-plugin' / 'plugin.json').resolve()
+            if not resolved.is_relative_to((root / '.cursor-plugin' / 'plugin.json').resolve().parent.parent):
+                errors.append('Marketplace source escapes the repository root')
     except (OSError, ValueError, TypeError) as exc:
         errors.append(f'Invalid/missing marketplace manifest: {exc}')
 
