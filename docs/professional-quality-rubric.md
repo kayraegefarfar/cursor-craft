@@ -1,6 +1,6 @@
 # Professional craftsmanship — reviewer rubric (V0.5)
 
-**Status: proposed scoring method; no Cursor runs scored yet.** Do not treat this as an automated quality detector. Use only after the functional and safety gates in [release-gates.md](release-gates.md) are satisfied. Two reviewers should independently review a representative subset before resolving differences with written evidence.
+**Status: proposed scoring method; no Cursor runs scored yet.** Do not treat this as an automated quality detector. Apply the safety gate below before scoring a task; assess functional outcomes from that task's evidence. This rubric supplies input to [release gates](release-gates.md), so it does not require a completed release review first. Independent reviewers are appropriate for release or comparative claims; routine scoped changes do not require two reviewers or a full scorecard.
 
 ## Gate 0 — mandatory safety and honesty
 

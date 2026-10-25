@@ -10,6 +10,8 @@ import json
 import re
 import hashlib
 import sys
+import os
+import stat
 from pathlib import Path
 from archive_security import validate_relative_name
 
@@ -112,7 +114,9 @@ def frontmatter(path: Path) -> dict[str, str]:
 
 
 def _relative_markdown_links(root: Path, errors: list[str]) -> None:
-    docs = [p for p in root.rglob('*') if p.is_file() and p.suffix in {'.md', '.mdc'}]
+    docs = [p for p in root.rglob('*')
+            if not any(part in SKIP_NAMES for part in p.relative_to(root).parts)
+            and p.is_file() and p.suffix in {'.md', '.mdc'}]
     for path in docs:
         data = path.read_text(encoding='utf-8')
         # Simple inline links; documentation uses no reference-style local links.
@@ -133,6 +137,35 @@ def validate(root: Path = ROOT) -> list[str]:
     errors: list[str] = []
     if not root.exists() or not root.is_dir():
         return ['Repository directory does not exist']
+
+    # Inspect metadata before any manifest, Skill, hash or Markdown read. A
+    # later rejection is too late if a required file points outside the tree.
+    # As with packaging, callers must keep the source quiescent during checks.
+    try:
+        absolute = Path(os.path.abspath(root))
+        for parent in (absolute, *absolute.parents):
+            info = parent.lstat()
+            if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400:
+                return ['Symlink forbidden: source root or ancestor is a link/reparse point']
+        pending = [root]
+        while pending:
+            directory = pending.pop()
+            for path in directory.iterdir():
+                if path.name in SKIP_NAMES:
+                    continue
+                info = path.lstat()
+                if stat.S_ISLNK(info.st_mode) or getattr(info, 'st_file_attributes', 0) & 0x400:
+                    errors.append(f'Symlink forbidden: {path.relative_to(root)} (link/reparse point)')
+                elif stat.S_ISDIR(info.st_mode):
+                    pending.append(path)
+                elif not stat.S_ISREG(info.st_mode):
+                    errors.append(f'Nonregular file forbidden: {path.relative_to(root)}')
+                elif info.st_size > 500_000:
+                    errors.append(f'File suspiciously large for a prompt-only plugin: {path.relative_to(root)}')
+        if errors:
+            return errors
+    except OSError:
+        return ['Cannot safely inspect source metadata; check access permissions']
 
     for rel in sorted(REQUIRED_DOCS):
         if not (root / rel).is_file():

@@ -1,5 +1,33 @@
 # Changelog
 
+## Unreleased
+
+- Correct the local static-check record to the suite that actually ran: 81 tests, 79 passed, 2 skipped.
+- Preserve existing approvals in design and authorized-analysis workflows; avoid
+  reopening accepted decisions. Remove the circular release-before-quality-review gate.
+- Consolidate current status references and distinguish historical installation
+  observations from current owner feedback. Add task-oriented documentation navigation.
+- Keep finite benchmark averages finite and reject unrepresentable numeric input.
+- Ignore unsafe/nonportable ZIP paths in the optional name-only overlap audit.
+
+- Reject ZIP file/directory path conflicts, including case-insensitive and
+  reversed-order conflicts, even when per-file hashes match.
+- Return a clear validation error for non-string benchmark variants.
+- Record owner-reported successful practical use separately from formal
+  acceptance evidence; do not infer unreported build or test coverage.
+
+- Reject source links/reparse points, special files and oversized files before
+  reading manifests, Skills or Markdown. Verify Windows junction rejection with
+  a real disposable junction; keep unsupported symlink tests explicitly skipped.
+- Reject duplicate runtime-attestation JSON fields and non-integer schema versions.
+
+- Add an explicit-path, read-only installation payload comparison with bounded
+  reads and link/reparse-point rejection. Never install or infer runtime success.
+- Document separate payload, discovery/provenance, Skill-routing and permission
+  gates, with a disposable-environment runtime protocol.
+- Add repository-local Codex development guidance without changing the Cursor
+  plugin's identity, core Rule or four Skills.
+
 ## 0.5.0-alpha — 2026-10-24
 
 - Ship the task-handoff template inside the Skill, and describe the main Agent instead of agents that are not in the package.

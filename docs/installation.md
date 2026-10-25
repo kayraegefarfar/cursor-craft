@@ -31,6 +31,13 @@ If your environment blocks local plugin imports or a name collision exists, **st
 
 ## Requesting installation from Cursor Agent
 
+Before a real test session, use the [runtime validation runbook](runtime-validation.md).
+`python tools/check_installation.py --candidate /path/to/authorized/test-copy`
+reports missing, changed and extra files without modifying the selected copy.
+It does not establish that Cursor loaded those files. Never point it at a user's
+global installation without authorization. A same-name Marketplace installation
+can take precedence over the local copy; confirm the active origin in Customize.
+
 If you prefer agent assistance, review and paste the English [Cursor Agent install prompt](../CURSOR_AGENT_INSTALL_PROMPT.md). It includes safety constraints and explicit stop conditions. It is not itself an executed installer.
 
 ## Removal and rollback

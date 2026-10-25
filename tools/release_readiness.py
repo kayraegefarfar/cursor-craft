@@ -20,7 +20,8 @@ ALLOWED_CASE_FIELDS = frozenset({'id', 'status', 'evidence_ids', 'environment_ke
 
 def assess(raw: dict) -> dict:
     """Evaluate coverage and consistency of manually entered release evidence."""
-    if not isinstance(raw, dict) or set(raw) != {'schema_version', 'cases'} or raw['schema_version'] != 1:
+    if (not isinstance(raw, dict) or set(raw) != {'schema_version', 'cases'}
+            or type(raw['schema_version']) is not int or raw['schema_version'] != 1):
         raise ValueError('Root must contain schema_version: 1 and cases only')
     cases = raw['cases']
     if not isinstance(cases, list) or len(cases) != len(CASE_IDS):
@@ -75,11 +76,21 @@ def main() -> int:
     parser.add_argument('input', type=Path, help='User-supplied JSON following examples/runtime-acceptance-template.json')
     args = parser.parse_args()
     try:
-        result = assess(json.loads(args.input.read_text(encoding='utf-8')))
+        result = assess(json.loads(args.input.read_text(encoding='utf-8'), object_pairs_hook=unique_fields))
     except (ValueError, OSError) as exc:
         parser.error(str(exc))
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0
+
+
+def unique_fields(pairs):
+    """Reject ambiguous attestations instead of accepting the final duplicate."""
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f'Duplicate JSON field: {key}')
+        result[key] = value
+    return result
 
 
 if __name__ == '__main__':

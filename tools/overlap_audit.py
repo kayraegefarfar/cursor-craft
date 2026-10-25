@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Read-only inspection of explicitly supplied legacy Skill ZIP archives.
 
-This checks names and brief descriptions, not the actual installed Cursor state.
+This checks directory names only, not descriptions or installed Cursor state.
 No files are extracted; no paths on the host are scanned without CLI input.
 """
 from __future__ import annotations
@@ -9,7 +9,8 @@ from __future__ import annotations
 import argparse
 import re
 import zipfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
+from archive_security import validate_relative_name
 
 CANDIDATES = {
     'design-studio': {'ui', 'ux', 'frontend', 'accessibility', 'creative', 'browser-ui', 'motion', 'visual'},
@@ -44,7 +45,9 @@ def audit(archives: list[Path]) -> dict[str, list[tuple[str, str, int]]]:
                 for item in items:
                     if not item.filename.endswith('/SKILL.md') or item.file_size > 100_000:
                         continue
-                    path = Path(item.filename)
+                    if validate_relative_name(item.orig_filename):
+                        continue
+                    path = PurePosixPath(item.filename)
                     skill_name = path.parent.name.lower()
                     if not re.fullmatch(r'[a-z0-9-]{2,80}', skill_name):
                         continue
