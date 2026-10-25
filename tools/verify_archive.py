@@ -29,11 +29,14 @@ def verify(path: Path) -> dict:
             if not 2 <= len(entries) <= MAX_ENTRIES:
                 raise ValueError('Unexpected archive entry count')
             names: set[str] = set()
+            directories: set[str] = set()
             hashes: dict[str, str] = {}
             total_size = 0
             manifest_bytes = None
             for item in entries:
-                name = item.filename
+                # ZipInfo.filename may normalize separators on Windows. Validate
+                # the original stored name so host normalization cannot hide it.
+                name = item.orig_filename
                 if item.is_dir() or not name.startswith(PREFIX):
                     raise ValueError('Non-file or non-rooted archive entry')
                 relative = name[len(PREFIX):]
@@ -43,6 +46,13 @@ def verify(path: Path) -> dict:
                 folded = relative.casefold()
                 if folded in names:
                     raise ValueError(f'Duplicate or Windows-colliding entry: {relative}')
+                parts = folded.split('/')
+                parents = {'/'.join(parts[:index]) for index in range(1, len(parts))}
+                # Files may arrive in either order. Reject both a file used as
+                # an ancestor and a file replacing an already implied directory.
+                if folded in directories or parents & names:
+                    raise ValueError(f'Archive file/directory collision: {relative}')
+                directories.update(parents)
                 names.add(folded)
                 if item.flag_bits & 1:
                     raise ValueError('Encrypted archives are unsupported')

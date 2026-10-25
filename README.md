@@ -47,7 +47,17 @@ If Cursor installed the plugin, disable it from Customize. If you copied it your
 
 Offline package checks and GitHub Actions run `40132211291` for commit `43262f5` passed on Ubuntu and Windows. Those checks do not show that Cursor loads the plugin, chooses the right Skill, or saves tokens.
 
-Cursor runtime scenarios for discovery, trivial routing, each Skill, and approval boundaries are **NOT_RUN** in this revision. The bundled evidence file stays `NOT_RUN` until a real Cursor session records results. See [docs/runtime-evidence.md](docs/runtime-evidence.md) and [docs/acceptance-tests.md](docs/acceptance-tests.md).
+The owner reports several days of successful use in normal projects. The tested
+build, source revision and individual scenario coverage were not recorded, so
+this is user-reported practical feedback, not a completed acceptance matrix.
+The bundled evidence file remains an unused `NOT_RUN` template. See
+[docs/runtime-evidence.md](docs/runtime-evidence.md) and
+[docs/acceptance-tests.md](docs/acceptance-tests.md).
+
+The [runtime validation runbook](docs/runtime-validation.md) separates payload
+comparison, discovery and real behavior checks. The optional offline
+`tools/check_installation.py --candidate <authorized-test-copy>` reports stale
+files without installing or changing anything; a match is not runtime evidence.
 
 ## Limitations
 
@@ -57,6 +67,20 @@ Cursor runtime scenarios for discovery, trivial routing, each Skill, and approva
 - Inspecting a compiled application needs the owner's authorization. This plugin does not bundle an analyzer.
 
 ## Maintainer documentation
+
+Start with the task you need:
+
+| Task | Read / run |
+| --- | --- |
+| Use or remove the plugin | [Installation](docs/installation.md) |
+| Develop it in Codex or another editor | [Repository contract](AGENTS.md), [Contributing](CONTRIBUTING.md) |
+| See current evidence and limitations | [Static checks](docs/static-checks.md), [runtime evidence](docs/runtime-evidence.md) |
+| Compare an authorized plugin copy | [Runtime validation, Gate A](docs/runtime-validation.md) |
+| Evaluate real behavior | [Acceptance matrix](docs/acceptance-tests.md), [runtime validation](docs/runtime-validation.md) |
+| Prepare an approved release | [Publication checklist](docs/publication-checklist.md) |
+
+The Python tools are optional maintainer utilities; normal plugin use requires
+only the manifest, Rule, Skills and license. They do not run inside Cursor.
 
 - [Architecture](docs/architecture.md)
 - [Release gates](docs/release-gates.md)

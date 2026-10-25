@@ -2,11 +2,15 @@
 
 ## Current state: v0.5.0-alpha
 
-The source structure, policy content and offline checker are available in the public repository. GitHub Actions run `40132211291` passed its Ubuntu and Windows static jobs for commit `43262f5`. No release tag exists. Actual Cursor runtime behavior, Customize discovery, cross-project interaction and performance improvement are **NOT_RUN**.
+The source structure, policy content and offline checker are available in the public repository. Current local checks are recorded in [static checks](static-checks.md); practical-use feedback and case-level coverage are recorded in [runtime evidence](runtime-evidence.md). Historical CI and installation observations do not establish the status of a newer working tree. No release was created by this development review.
 
 See the [runtime evidence guidance](runtime-evidence.md) and [maintainer review](maintainer-review.md). Automated release-readiness checks do not replace reviewer signoff.
 
 ## Required before labeling a public stable V1
+
+The owner has since reported several days of successful use in normal projects.
+This practical feedback is recorded in [runtime evidence](runtime-evidence.md);
+it does not supply per-case evidence or a tested build/revision for these gates.
 
 1. **License and provenance:** original package files reviewed; no user's existing global packs bundled; all borrowed content vetted.
 2. **Manifest and compatibility:** plugin successfully installed/discovered on supported Cursor builds; no undocumented component paths.

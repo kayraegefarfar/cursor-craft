@@ -14,7 +14,7 @@ Determine the target, permitted scope and owner/authorization before inspecting 
 4. If justified, expand from direct dependencies to wider architecture; record why increased depth is necessary.
 5. Distinguish **observed**, **inferred**, **unknown** and **not inspected**. Provide source location, version, evidence reference and tool limitations.
 6. Assess source/license and obligations, security, dependency exposure, maintenance, performance and existing project fit. Licensed code reuse may be appropriate; independent implementation may be better. Rewriting does not automatically remove intellectual-property obligations.
-7. Propose the smallest sound integration options. Ask approval before substantial code transfer or architectural change.
+7. Propose the smallest sound integration options. Ask approval before substantial code transfer or architectural change when it is not already covered by explicit authorization. Reuse documented permission for the same target and scope; reassess when either changes.
 8. Return a compact evidence packet to the main Agent, not raw logs. The main Agent continues the approved implementation, or uses `design-studio` when a design change is actually in scope, and then verifies it with relevant tests. There is no separate Engineering agent.
 
 ## Evidence packet

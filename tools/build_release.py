@@ -88,7 +88,7 @@ def main() -> int:
         return 1
     print(f'Source ZIP: {args.output}')
     print(f'SHA256: {digest}')
-    print('Offline source validation only; Cursor runtime still untested.')
+    print('Offline source validation only; this build does not verify Cursor runtime.')
     return 0
 
 

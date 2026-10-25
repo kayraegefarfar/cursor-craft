@@ -8,6 +8,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
+from statistics import mean
 from collections import defaultdict
 from pathlib import Path
 
@@ -25,7 +27,7 @@ def summarize(raw: dict) -> dict:
     for index, run in enumerate(raw['runs']):
         if not isinstance(run, dict) or not REQUIRED.issubset(run):
             raise ValueError(f'Run {index}: missing required fields')
-        if run['variant'] not in VARIANTS:
+        if not isinstance(run['variant'], str) or run['variant'] not in VARIANTS:
             raise ValueError(f'Run {index}: variant must be baseline or candidate')
         if type(run['functional_pass']) is not bool:
             raise ValueError(f'Run {index}: functional_pass must be bool')
@@ -33,7 +35,11 @@ def summarize(raw: dict) -> dict:
             raise ValueError(f'Run {index}: critical_violations must be nonnegative integer')
         for field in NUMBER_FIELDS:
             value = run[field]
-            if type(value) not in (int, float) or value < 0 or value != value or value == float('inf'):
+            try:
+                finite = type(value) in (int, float) and math.isfinite(value)
+            except OverflowError:
+                finite = False
+            if not finite or value < 0:
                 raise ValueError(f'Run {index}: invalid number for {field}')
             if field.endswith('_tokens') and type(value) is not int:
                 raise ValueError(f'Run {index}: {field} must be integer')
@@ -54,7 +60,7 @@ def summarize(raw: dict) -> dict:
             continue
         # Multiple repetitions are summarized per task/env/prompt, not cherry-picked.
         def average(runs: list[dict], field: str) -> float:
-            return sum(x[field] for x in runs) / len(runs)
+            return mean(x[field] for x in runs)
         b_pass = all(x['functional_pass'] and x['critical_violations'] == 0 for x in before)
         c_pass = all(x['functional_pass'] and x['critical_violations'] == 0 for x in after)
         result = {

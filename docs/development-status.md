@@ -1,10 +1,20 @@
 # Development and verification status
 
-**Review date:** 2026-10-24
+**Review date:** 2026-10-25
 **Version:** 0.5.0-alpha
-**Repository state:** Public source at <https://github.com/kayraegefarfar/cursor-craft>, commit `43262f5`. No `v0.5.0-alpha` git tag and no GitHub Release. Cursor Customize discovery remains **NOT_RUN** because the installed local plugin does not match this commit and was not modified.
+**Repository state:** Local development based on public-source commit `80c6001`, with uncommitted improvements. No publication was performed during this review. The owner reports several days of successful use; exact build, revision and per-case coverage were not recorded. See [runtime evidence](runtime-evidence.md) for that report and the separately labeled historical installation mismatch. The current global installation was not inspected.
 
 ## Verifiable in this workspace
+
+An uncommitted development update based on `80c6001` adds a read-only payload
+comparator and a [runtime validation runbook](runtime-validation.md). These
+prepare validation without accessing global Cursor configuration. They do not
+close any Cursor runtime gate. See [static checks](static-checks.md) for current
+local results; the earlier CI record above does not validate this update.
+
+The update also rejects source links/reparse points before reading content and
+rejects ambiguous runtime-attestation JSON. A real Windows junction fixture was
+verified; two symlink checks remain unavailable under this host's permissions.
 
 - Cursor Plugin manifest JSON and documented folder discovery shape.
 - Four named Skill frontmatter sections, one core Rule, internal links and structural requirements.
@@ -19,6 +29,11 @@
 The exact local test commands and counts must be recorded **after each actual execution**; passing package tests are not Cursor runtime tests.
 
 ## Not yet verified
+
+The owner reported successful use in normal projects over several days on
+2026-10-25. Build, source revision and individual case coverage were not recorded;
+the items below remain pending independent or case-level verification, rather
+than a claim that nobody has used the plugin.
 
 - Actual Cursor local plugin loading, UI visibility, real Rule/Skill routing, Windows/macOS/Linux compatibility.
 - Runtime tool authorization or prompt injection resistance.
